@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+</head>
+<body>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+    <script >
+        let names = [];
+        let ages = [];
+        async function getData() {
+    const response = await  fetch("Artists.csv");
+    const data = await response.text();
+    let rows = data.split("\n").slice(1);
+    rows.splice(10,rows.length-10);
+    rows.forEach((elem) => {
+        const row = elem.split(",");
+        const name = row[0];
+        const age = row[3];
+        names.push(name);
+        ages.push(age);
+        console.log(name, age);
+        });
+     }
+
+    getData();
+    async function graphing(){
+        const ctx = document.getElementById('myChart');
+      
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: names,
+            datasets: [{
+              label: 'Artists',
+              data: ages,
+              borderWidth: 1
+            }]
+          }
+        });
+    }
+
+    graphing()
+      </script>
+</body>
+</html>
